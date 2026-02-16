@@ -23,6 +23,14 @@ class CounterWidget extends StatefulWidget {
 class _CounterWidgetState extends State<CounterWidget> {
   int _counter = 0; // This is our STATE
 
+  // void increment() {
+  //   setState(() => _counter++);
+  // }
+
+  void reset() {
+    setState(() => _counter = 0);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,6 +59,18 @@ class _CounterWidgetState extends State<CounterWidget> {
               });
             },
           ),
+          SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              ElevatedButton(onPressed: () {
+                setState(() {
+                  _counter++;
+                });
+              }, child: Text("+")),
+              ElevatedButton(onPressed: reset, child: Text("Reset")),
+            ],
+            ),
         ],
       ),
     );
