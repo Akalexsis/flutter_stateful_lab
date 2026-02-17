@@ -22,6 +22,7 @@ class CounterWidget extends StatefulWidget {
 
 class _CounterWidgetState extends State<CounterWidget> {
   int _counter = 0; // This is our STATE
+  final TextEditingController _controller = TextEditingController();
 
   void _increment() {
     setState(() => _counter++);
@@ -35,9 +36,25 @@ class _CounterWidgetState extends State<CounterWidget> {
     setState(() => _counter = 0);
   }
 
+  // FIX - GET INPUT VALUE
+  void _setValue() {
+    // get and convert input to int value
+    String inputVal = _controller.text;
+    int num = int.parse(inputVal);
+
+    const warning = SnackBar(content: Text('Limit Reached!'));
+
+    if ((num < 0) || (num > 100)) {
+      ScaffoldMessenger.of(context).showSnackBar(warning);
+    } else {
+      setState(() => _counter = num);
+    }
+
+  }
+
   Color get counterColor {
     if (_counter == 0) return Colors.red;
-    if (_counter > 50) return const Color.fromARGB(255, 77, 200, 81);
+    if (_counter >= 50) return const Color.fromARGB(255, 77, 200, 81);
     return Colors.black;
 }
 
@@ -77,6 +94,20 @@ class _CounterWidgetState extends State<CounterWidget> {
               ElevatedButton(onPressed: _counter == 0 ? null : _decrement, child: Text("-")),
               ElevatedButton(onPressed: _reset, child: Text("Reset")),
             ],
+            ),
+            // accept input from user
+            Center(
+              child: Column(
+                children: [
+                  TextField(
+                    controller: _controller,
+                    decoration: InputDecoration(
+                      labelText: 'Enter a value'
+                    )
+                  ),
+                  ElevatedButton(onPressed: _setValue, child: Text("Set Value"))
+                ],
+              )
             ),
         ],
       ),
